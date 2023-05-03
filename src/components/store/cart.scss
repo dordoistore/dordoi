@@ -1,0 +1,21 @@
+.cart {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  border: 1px solid #f0f0f0;
+  padding: 24px;
+  border-radius: 8px;
+  height: 40vh;
+  overflow: auto;
+  .ant-card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .ant-card-body:before {
+    display: none;
+  }
+  .ant-card-body:after {
+    display: none;
+  }
+}
