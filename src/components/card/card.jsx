@@ -78,6 +78,27 @@ const CardProduct = ({ search }) => {
       yuan: 10,
       usd: 90,
     },
+    {
+      code: "1222211",
+      name: "berska",
+      quantity: 1,
+      yuan: 10,
+      usd: 90,
+    },
+    {
+      code: "1222211",
+      name: "berska",
+      quantity: 1,
+      yuan: 10,
+      usd: 90,
+    },
+    {
+      code: "1222211",
+      name: "berska",
+      quantity: 1,
+      yuan: 10,
+      usd: 90,
+    },
   ]);
 
   const results = !search
@@ -101,6 +122,8 @@ const CardProduct = ({ search }) => {
             onClick: (event) => handleClick(record),
           };
         }}
+        pagination={false}
+        bordered
       />
     </div>
   );

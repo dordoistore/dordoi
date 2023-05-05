@@ -1,6 +1,12 @@
 .header {
   padding: 20px;
-  background-color: #2f2fd3;
+  background-color: #4B0082;
   margin-bottom: 40px;
+  gap: 40px;
+  display: flex;
+  justify-content: center;
 
+  .text {
+    color: #FFD700;
+  }
 }

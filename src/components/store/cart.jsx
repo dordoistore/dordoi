@@ -14,7 +14,7 @@ const Cart = () => {
     }
     return (
         <div className="cart">
-            {cartItems.map((item) => (
+            {cartItems?.map((item) => (
                 <Card key={item.code} className="cart_content" hoverable>
                    <div>{item.code}</div>
                     <div>{item.quantity}</div>

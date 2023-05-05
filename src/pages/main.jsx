@@ -6,6 +6,7 @@ import ModalWrapper from "../components/modal/modal";
 import "./main.scss";
 
 import Cart from "../components/store/cart";
+import { NavLink } from "react-router-dom";
 const Main = () => {
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
@@ -22,9 +23,8 @@ const Main = () => {
           onChange={handleChange}
           value={search}
           placeholder="Введите код карточки"
-          style={{width: 300}}
+          style={{ width: 300 }}
         />
-
       </div>
       <Row gutter={16}>
         <Col span={6} push={18}>
@@ -40,7 +40,9 @@ const Main = () => {
             }}
           >
             <h3>Товары</h3>
-            <Button onClick={() => setShow(!show)}>Добавить товар</Button>
+            <NavLink to="/add">
+              <Button onClick={() => setShow(!show)}>Добавить товар</Button>
+            </NavLink>
             <ModalWrapper show={show} close={() => setShow(false)} />
           </div>
           <CardProduct search={search} />
