@@ -163,6 +163,11 @@ const CardProduct = ({ search }) => {
     console.log("Удалить:", record);
     // Здесь добавьте ваш код для удаления элемента
   };
+  const updateProduct = (updatedProduct) => {
+    setProduct(
+        product.map((item) => (item.code === updatedProduct.code ? updatedProduct : item))
+    );
+  };
   return (
     <div className="card">
       <Table
@@ -187,6 +192,7 @@ const CardProduct = ({ search }) => {
           show={show}
           close={() => setShow(false)}
           selectedProduct={selectedProduct}
+          updateProduct={updateProduct}
       />
     </div>
   );

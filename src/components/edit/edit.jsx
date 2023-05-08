@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./edit.scss";
 import {Button, Form, Input, notification} from "antd";
-const Edit = ({ selectedProduct, closeModal }) => {
+const Edit = ({ selectedProduct, closeModal,  updateProduct }) => {
   const [form] = Form.useForm();
   const openNotification = () => {
     notification.config({
@@ -15,11 +15,11 @@ const Edit = ({ selectedProduct, closeModal }) => {
   };
   const onSubmit = (values) => {
     console.log("Received values of form: ", values);
-    form.resetFields();
     closeModal();
-    form.resetFields();
+    updateProduct(values);
     openNotification();
   };
+
   useEffect(() => {
     if (selectedProduct) {
       form.setFieldsValue({
@@ -101,7 +101,7 @@ const Edit = ({ selectedProduct, closeModal }) => {
             placeholder="Ввидите доллар"
           />
         </Form.Item>
-        <Form.Item>
+        <Form.Item className="edit_button">
           <Button htmlType="submit">Готово</Button>
         </Form.Item>
       </Form>

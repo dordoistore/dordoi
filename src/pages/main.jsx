@@ -7,7 +7,6 @@ import "./main.scss";
 import { NavLink } from "react-router-dom";
 const Main = () => {
   const [search, setSearch] = useState("");
-
   const handleChange = (e) => {
     setSearch(e.target.value);
   };

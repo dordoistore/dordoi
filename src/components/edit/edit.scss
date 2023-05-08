@@ -4,9 +4,8 @@
       flex-direction: column;
    }
 
-
-}
-
-.custom-message {
-   left: 16px !important;
+   .edit_button {
+      display: flex;
+      justify-content: flex-end;
+   }
 }
