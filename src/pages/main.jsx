@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import { Button, Col, Input, Row } from "antd";
 import CardProduct from "../components/card/card";
-
-import ModalWrapper from "../components/modal/modal";
+import Cart from "../components/store/cart";
 import "./main.scss";
 
-import Cart from "../components/store/cart";
 import { NavLink } from "react-router-dom";
+import { clearCart } from "../store/actions";
+import { useDispatch } from "react-redux";
 const Main = () => {
-  const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setSearch(e.target.value);
+  };
+  const handleClearCart = () => {
+    dispatch(clearCart());
   };
   return (
     <div className="container main">
@@ -25,11 +28,18 @@ const Main = () => {
           placeholder="Введите код карточки"
           style={{ width: 300 }}
         />
+        <NavLink to="/add">
+          <Button>Добавить товар</Button>
+        </NavLink>
       </div>
       <Row gutter={16}>
         <Col span={6} push={18}>
           <h3>Корзина</h3>
           <Cart />
+          <div className="cart_button">
+            <Button onClick={handleClearCart}>Очистить</Button>
+            <Button>готово</Button>
+          </div>
         </Col>
         <Col span={18} pull={6}>
           <div
@@ -40,10 +50,6 @@ const Main = () => {
             }}
           >
             <h3>Товары</h3>
-            <NavLink to="/add">
-              <Button onClick={() => setShow(!show)}>Добавить товар</Button>
-            </NavLink>
-            <ModalWrapper show={show} close={() => setShow(false)} />
           </div>
           <CardProduct search={search} />
         </Col>

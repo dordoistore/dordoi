@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Card, Table } from "antd";
+import { Table } from "antd";
 import "./card.scss";
-import { ReactComponent as Menu } from "../../assets/icons/menu.svg";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/actions";
+import ModalWrapper from "../modal/modal";
 
 const CardProduct = ({ search }) => {
+  const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const columns = [
     {
@@ -32,6 +33,17 @@ const CardProduct = ({ search }) => {
       title: "USD",
       dataIndex: "usd",
       sorter: (a, b) => a.usd - b.usd,
+    },
+    {
+      title: "Действия",
+      dataIndex: "actions",
+      width: 150,
+      render: (text, record) => (
+        <div className="action">
+          <div onClick={() => setShow(!show)}>Редактировать</div>
+          <div>Удалить</div>
+        </div>
+      ),
     },
   ];
 
@@ -111,6 +123,16 @@ const CardProduct = ({ search }) => {
   const onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);
   };
+
+  const handleEdit = (record) => {
+    console.log("Редактировать:", record);
+    // Здесь добавьте ваш код для редактирования элемента
+  };
+
+  const handleDelete = (record) => {
+    console.log("Удалить:", record);
+    // Здесь добавьте ваш код для удаления элемента
+  };
   return (
     <div className="card">
       <Table
@@ -124,6 +146,12 @@ const CardProduct = ({ search }) => {
         }}
         pagination={false}
         bordered
+      />
+
+      <ModalWrapper
+        title="Редактировать Товар"
+        show={show}
+        close={() => setShow(false)}
       />
     </div>
   );

@@ -1,29 +1,71 @@
-import React from 'react';
-import {Card} from "antd";
-import {useSelector} from "react-redux";
-import {ReactComponent as Delete} from "../../assets/icons/delete.svg";
-import "./cart.scss"
-import {useDispatch} from "react-redux";
-import {removeFromCart} from "../../store/actions";
-const Cart = () => {
-    const cartItems = useSelector((state) => state.cart);
-    const dispatch = useDispatch()
+import React, { useState } from "react";
+import { Card, Input } from "antd";
+import { useSelector } from "react-redux";
+import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
+import "./cart.scss";
+import { useDispatch } from "react-redux";
+import { removeFromCart, updateQuantity } from "../../store/actions";
 
-    const handleDelete = (code) => {
-        dispatch(removeFromCart(code));
-    }
-    return (
-        <div className="cart">
-            {cartItems?.map((item) => (
-                <Card key={item.code} className="cart_content" hoverable>
-                   <div>{item.code}</div>
-                    <div>{item.quantity}</div>
-                    <div>{item.usd}</div>
-                    <Delete onClick={() => handleDelete(item.code)}/>
-                </Card>
-            ))}
-        </div>
+const Cart = () => {
+  const [editingItem, setEditingItem] = useState(null);
+  const [editingValue, setEditingValue] = useState("");
+  const cartItems = useSelector((state) => state.cart);
+
+  const dispatch = useDispatch();
+
+  const handleDelete = (code) => {
+    dispatch(removeFromCart(code));
+  };
+  const handleEditStart = (code, quantity) => {
+    setEditingItem(code);
+    setEditingValue(quantity);
+  };
+
+  const handleEditEnd = () => {
+    // Обновление значения quantity в хранилище
+    dispatch(
+        updateQuantity({ code: editingItem, quantity: parseInt(editingValue) })
     );
+    setEditingItem(null);
+    setEditingValue("");
+  };
+
+  const handleInputChange = (event) => {
+    setEditingValue(event.target.value);
+  };
+
+  return (
+      <div className="cart">
+        <div className="sort">
+          <div>код</div>
+          <div>кол</div>
+          <div>цена</div>
+        </div>
+        {cartItems?.map((item) => (
+            <Card key={item.code} className="cart_content" hoverable>
+              <div className="cart_item_container">
+                <div>{item.code}</div>
+                <div onClick={() => handleEditStart(item.code, item.quantity)}>
+                  {editingItem === item.code ? (
+                      <Input
+                          className="no-arrows"
+                          type="number"
+                          value={editingValue}
+                          onChange={handleInputChange}
+                          onBlur={handleEditEnd}
+                          autoFocus
+                      />
+                  ) : (
+                      item.quantity
+                  )}
+                </div>
+                <div>{item.usd}</div>
+              </div>
+              <Delete onClick={() => handleDelete(item.code)} />
+            </Card>
+        ))}
+      </div>
+  );
 };
 
 export default Cart;

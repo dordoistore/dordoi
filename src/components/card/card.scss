@@ -2,7 +2,7 @@
   display: flex;
   gap: 10px;
   flex-direction: column;
-  height: 50vh;
+  height: 40vh;
   overflow: auto;
 
   .ant-card-body {
@@ -17,7 +17,11 @@
   .ant-card-body:after {
     display: none;
   }
-
+.action {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
 }
 
 

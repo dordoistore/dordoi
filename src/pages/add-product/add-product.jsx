@@ -5,6 +5,7 @@ const AddProduct = () => {
     const [form] = Form.useForm();
     const onSubmit = (values) => {
         console.log('Received values of form: ', values);
+        form.resetFields();
     };
   return (
     <Form className="add_product container" form={form} onFinish={onSubmit}>

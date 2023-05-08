@@ -1,15 +1,15 @@
 import React from "react";
 import { Modal } from "antd";
-import AddProduct from "../add-product/add-product";
+import Edit from "../edit/edit";
 
-const ModalWrapper = ({show, close}) => {
+const ModalWrapper = ({show, close, title}) => {
   return (
     <Modal
-      title="Добавить товар"
+      title={title}
       onCancel={close}
       open={show}
     >
-        <AddProduct/>
+        <Edit/>
     </Modal>
   );
 };
