@@ -31,11 +31,11 @@
     width: 100%;
 
     .cart_item_code {
+      display: flex;
+      word-break: break-word;
       width: 100px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-
+      font-size: 10px;
+      flex-wrap: wrap;
     }
   }
 
