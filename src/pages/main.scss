@@ -1,19 +1,18 @@
 .main {
   display: flex;
   flex-direction: column;
-  gap: 40px;
 
-
+  h3 {
+    margin: 16px 0;
+  }
   .search {
     display: flex;
-
-    gap: 20px;
-  }
-
-  .cart_button {
-    display: flex;
     justify-content: space-between;
-    margin-top: 10px;
+    gap: 20px;
+
+    .ant-btn-default {
+      color: green;
+      border-color: green;
+    }
   }
 }
-

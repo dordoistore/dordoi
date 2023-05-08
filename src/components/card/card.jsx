@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table } from "antd";
+import {Button, Table} from "antd";
 import "./card.scss";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/actions";
@@ -7,30 +7,31 @@ import ModalWrapper from "../modal/modal";
 
 const CardProduct = ({ search }) => {
   const [show, setShow] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const dispatch = useDispatch();
   const columns = [
     {
-      title: "Code",
+      title: "Код",
       dataIndex: "code",
       sorter: (a, b) => a.code - b.code,
     },
     {
-      title: "Name",
+      title: "Название",
       dataIndex: "name",
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
-      title: "Quantity",
+      title: "Кол-во",
       dataIndex: "quantity",
       sorter: (a, b) => a.quantity - b.quantity,
     },
     {
-      title: "Yuan",
+      title: "Юань",
       dataIndex: "yuan",
       sorter: (a, b) => a.yuan - b.yuan,
     },
     {
-      title: "USD",
+      title: "Доллар",
       dataIndex: "usd",
       sorter: (a, b) => a.usd - b.usd,
     },
@@ -40,8 +41,8 @@ const CardProduct = ({ search }) => {
       width: 150,
       render: (text, record) => (
         <div className="action">
-          <div onClick={() => setShow(!show)}>Редактировать</div>
-          <div>Удалить</div>
+          <Button onClick={() => handleEdit(record)}>Редактировать</Button>
+          <Button>Удалить</Button>
         </div>
       ),
     },
@@ -49,16 +50,16 @@ const CardProduct = ({ search }) => {
 
   const [product, setProduct] = useState([
     {
-      code: "111111",
+      code: "111111111111111111111111111111",
       name: "adidas",
-      quantity: 1,
+      quantity: 5,
       yuan: 10,
       usd: 90,
     },
     {
       code: "22222",
       name: "lining",
-      quantity: 1,
+      quantity: 3,
       yuan: 10,
       usd: 90,
     },
@@ -84,28 +85,56 @@ const CardProduct = ({ search }) => {
       usd: 90,
     },
     {
-      code: "1222211",
+      code: "12",
       name: "berska",
       quantity: 1,
       yuan: 10,
       usd: 90,
     },
     {
-      code: "1222211",
+      code: "22",
       name: "berska",
       quantity: 1,
       yuan: 10,
       usd: 90,
     },
     {
-      code: "1222211",
+      code: "13",
       name: "berska",
       quantity: 1,
       yuan: 10,
       usd: 90,
     },
     {
-      code: "1222211",
+      code: "14",
+      name: "berska",
+      quantity: 1,
+      yuan: 10,
+      usd: 90,
+    },
+    {
+      code: "8",
+      name: "berska",
+      quantity: 1,
+      yuan: 10,
+      usd: 90,
+    },
+    {
+      code: "7",
+      name: "berska",
+      quantity: 1,
+      yuan: 10,
+      usd: 90,
+    },
+    {
+      code: "6",
+      name: "berska",
+      quantity: 1,
+      yuan: 10,
+      usd: 90,
+    },
+    {
+      code: "21",
       name: "berska",
       quantity: 1,
       yuan: 10,
@@ -124,9 +153,10 @@ const CardProduct = ({ search }) => {
     console.log("params", pagination, filters, sorter, extra);
   };
 
+
   const handleEdit = (record) => {
-    console.log("Редактировать:", record);
-    // Здесь добавьте ваш код для редактирования элемента
+    setSelectedProduct(record);
+    setShow(true);
   };
 
   const handleDelete = (record) => {
@@ -139,9 +169,13 @@ const CardProduct = ({ search }) => {
         columns={columns}
         dataSource={results}
         onChange={onChange}
-        onRow={(record, rowIndex) => {
+        onRow={(record) => {
           return {
-            onClick: (event) => handleClick(record),
+            onClick: (event) => {
+              if (!event.target.closest('.action')) {
+                handleClick(record);
+              }
+            }
           };
         }}
         pagination={false}
@@ -149,9 +183,10 @@ const CardProduct = ({ search }) => {
       />
 
       <ModalWrapper
-        title="Редактировать Товар"
-        show={show}
-        close={() => setShow(false)}
+          title="Редактировать Товар"
+          show={show}
+          close={() => setShow(false)}
+          selectedProduct={selectedProduct}
       />
     </div>
   );

@@ -1,11 +1,11 @@
 .cart {
   display: flex;
-  gap: 10px;
+  gap: 2px;
   flex-direction: column;
   border: 1px solid #f0f0f0;
   padding: 4px;
   border-radius: 8px;
-  height: 40vh;
+  height: 50vh;
   overflow: auto;
 
   .ant-card-body {
@@ -29,6 +29,14 @@
     align-items: center;
     flex: 1;
     width: 100%;
+
+    .cart_item_code {
+      width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+    }
   }
 
   .cart_item_container div {
@@ -39,8 +47,8 @@
   .sort {
     display: flex;
     justify-content: space-between;
-    padding: 0 30px;
-    gap: 45px;
+    padding: 5px 5px 0 5px;
+    margin-bottom: 16px;
   }
 
   .no-arrows::-webkit-inner-spin-button,
@@ -51,5 +59,19 @@
 
   .no-arrows {
     -moz-appearance: textfield;
+  }
+
+  .cart_button {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    .button_clear {
+      color: red !important;
+      border-color: red !important;
+    }
+    .ant-btn-default {
+      color: green;
+      border-color: green;
+    }
   }
 }

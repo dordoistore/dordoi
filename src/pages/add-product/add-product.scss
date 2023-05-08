@@ -1,4 +1,9 @@
 .add_product {
   display: flex;
   gap: 10px;
+
+  .ant-btn-default {
+    color: green;
+    border-color: green;
+  }
 }
