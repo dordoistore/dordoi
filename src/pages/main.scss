@@ -5,11 +5,31 @@
   h3 {
     margin: 16px 0;
   }
+
+  .total {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
   .search {
     display: flex;
     justify-content: space-between;
     gap: 20px;
 
+    .ant-btn-default {
+      color: green;
+      border-color: green;
+    }
+  }
+
+  .cart_button {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    .button_clear {
+      color: red !important;
+      border-color: red !important;
+    }
     .ant-btn-default {
       color: green;
       border-color: green;

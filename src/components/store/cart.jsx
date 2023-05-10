@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Button, Card, Input } from "antd";
+import {  Card, Input } from "antd";
 import { useSelector } from "react-redux";
 import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 import "./cart.scss";
 import { useDispatch } from "react-redux";
-import { clearCart, removeFromCart, updateQuantity } from "../../store/actions";
+import {  removeFromCart, updateQuantity } from "../../store/actions";
 
 const Cart = () => {
   const [editingItem, setEditingItem] = useState(null);
@@ -19,9 +19,6 @@ const Cart = () => {
   const handleEditStart = (code, quantity) => {
     setEditingItem(code);
     setEditingValue(quantity);
-  };
-  const handleClearCart = () => {
-    dispatch(clearCart());
   };
   const handleEditEnd = () => {
     // Обновление значения quantity в хранилище
@@ -68,12 +65,6 @@ const Cart = () => {
           <Delete onClick={() => handleDelete(item.code)} />
         </Card>
       ))}
-      <div className="cart_button">
-        <Button onClick={handleClearCart} className="button_clear">
-          Очистить
-        </Button>
-        <Button>Готово</Button>
-      </div>
     </div>
   );
 };
