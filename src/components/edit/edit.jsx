@@ -58,7 +58,7 @@ const Edit = ({ selectedProduct, closeModal,  updateProduct }) => {
             },
           ]}
         >
-          <Input type="text" addonBefore="Название" placeholder="Ввидите имя" />
+          <Input type="text" addonBefore="Название" placeholder="Введите название" />
         </Form.Item>
         <Form.Item
           name="quantity"
@@ -72,7 +72,7 @@ const Edit = ({ selectedProduct, closeModal,  updateProduct }) => {
           <Input
             type="number"
             addonBefore="Кол-во"
-            placeholder="Ввидите количество"
+            placeholder="Введите количество"
           />
         </Form.Item>
         <Form.Item
@@ -84,7 +84,7 @@ const Edit = ({ selectedProduct, closeModal,  updateProduct }) => {
             },
           ]}
         >
-          <Input type="number" addonBefore="Юань" placeholder="Ввидите юянь" />
+          <Input type="number" addonBefore="Юань" placeholder="Цена в юанях" />
         </Form.Item>
         <Form.Item
           name="usd"
@@ -98,11 +98,11 @@ const Edit = ({ selectedProduct, closeModal,  updateProduct }) => {
           <Input
             type="number"
             addonBefore="Доллар"
-            placeholder="Ввидите доллар"
+            placeholder="Цена в долларах"
           />
         </Form.Item>
         <Form.Item className="edit_button">
-          <Button htmlType="submit">Готово</Button>
+          <Button htmlType="submit">Сохранить</Button>
         </Form.Item>
       </Form>
     </div>

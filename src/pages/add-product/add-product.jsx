@@ -1,11 +1,26 @@
 import React from "react";
+import axios from 'axios';
 import { Button, Form, Input } from "antd";
+
 import "./add-product.scss";
+import {BASE_URL, API} from "../../contants/API";
+
 const AddProduct = () => {
   const [form] = Form.useForm();
-  const onSubmit = (values) => {
-    console.log("Received values of form: ", values);
+  const onSubmit = async (values) => {
+
+    const payload = {
+      code: values.code,
+      name: values.name,
+      factory: values.factory,
+      quantity: +values.quantity,
+      price_yuan: +values.yuan,
+      price_usd: +values.usd
+    }
+
+    await axios.post(`${BASE_URL}/${API.products}`, payload);
     form.resetFields();
+    //show tooltip 'Создано'
   };
   return (
     <Form className="add_product container" form={form} onFinish={onSubmit}>
@@ -18,7 +33,7 @@ const AddProduct = () => {
           },
         ]}
       >
-        <Input type="text" addonBefore="Код" placeholder="Ввидите код" />
+        <Input type="text" addonBefore="Код" placeholder="Введите код" />
       </Form.Item>
       <Form.Item
         name="name"
@@ -29,8 +44,20 @@ const AddProduct = () => {
           },
         ]}
       >
-        <Input type="text" addonBefore="Название" placeholder="Ввидите имя" />
+        <Input type="text" addonBefore="Название" placeholder="Введите название" />
       </Form.Item>
+
+        <Form.Item
+            name="factory"
+            rules={[
+                {
+                    required: true,
+                    message: "Заполните поле",
+                },
+            ]}
+        >
+            <Input type="text" addonBefore="Фабрика" placeholder="Введите имя фабрики" />
+        </Form.Item>
       <Form.Item
         name="quantity"
         rules={[
@@ -43,7 +70,7 @@ const AddProduct = () => {
         <Input
           type="number"
           addonBefore="Кол-во"
-          placeholder="Ввидите количество"
+          placeholder="Введите количество"
         />
       </Form.Item>
       <Form.Item
@@ -55,7 +82,7 @@ const AddProduct = () => {
           },
         ]}
       >
-        <Input type="number" addonBefore="Юань" placeholder="Ввидите юянь" />
+        <Input type="number" addonBefore="Юань" placeholder="Цена в юанях" />
       </Form.Item>
       <Form.Item
         name="usd"
@@ -69,12 +96,12 @@ const AddProduct = () => {
         <Input
           type="number"
           addonBefore="Доллар"
-          placeholder="Ввидите доллар"
+          placeholder="Цена в долларах"
         />
       </Form.Item>
       <Form.Item>
         <Button  htmlType="submit">
-         Готово
+         Сохранить
         </Button>
       </Form.Item>
     </Form>
