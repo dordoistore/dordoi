@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 import "./cart.scss";
 import { useDispatch } from "react-redux";
-import {  removeFromCart, updateQuantity } from "../../store/actions";
+import { removeFromCart, updateQuantity } from "../../store/actions/cart-actions";
 
 const Cart = () => {
   const [editingItem, setEditingItem] = useState(null);
@@ -59,8 +59,8 @@ const Cart = () => {
                 item.quantity
               )}
             </div>
-            <div>{item.usd}</div>
-            <div>{item.quantity * item.usd}</div>
+            <div>{Math.round(item.price_usd)}</div>
+            <div>{item.quantity * Math.round(item.price_usd)}</div>
           </div>
           <Delete onClick={() => handleDelete(item.code)} />
         </Card>

@@ -1,14 +1,67 @@
-import React, { useState } from "react";
-import {Button, Table} from "antd";
-import "./card.scss";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../store/actions";
-import ModalWrapper from "../modal/modal";
+import React, { useEffect, useState } from "react";
+import { Button, Table } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
+import { addToCart } from "../../store/actions/cart-actions";
+import ModalWrapper from "../modal/modal";
+import {editProduct, removeFromProduct, setProducts} from "../../store/actions/product-actions";
+import { API, BASE_URL } from "../../contants/API";
+
+import "./card.scss";
 const CardProduct = ({ search }) => {
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const dispatch = useDispatch();
+  const products = useSelector((state) => state.products);
+  const results = !search
+    ? products
+    : products.filter((card) => card.code?.includes(search));
+
+  useEffect(() => {
+      fetchProduct()
+  }, [products]);
+  const handleClick = (item) => {
+    dispatch(addToCart(item));
+  };
+  const onChange = (pagination, filters, sorter, extra) => {
+    console.log("params", pagination, filters, sorter, extra);
+  };
+    const fetchProduct = async () => {
+        const response = await axios.get(`${BASE_URL}/${API.products}`);
+        dispatch(setProducts(response.data));
+    };
+  const handleEdit = (record) => {
+    setSelectedProduct(record);
+    setShow(true);
+  };
+
+    const updateProduct = async (updatedProduct) => {
+        const response = await axios.put(`${BASE_URL}/${API.products}/${selectedProduct.code}`, updatedProduct);
+        if (response.status === 200) {
+            dispatch(editProduct(response.data));  // Здесь предполагается, что сервер возвращает обновленный продукт в ответе
+        } else {
+            console.error("Ошибка: не удалось обновить продукт");
+        }
+    };
+
+    const deleteProduct = async (id) => {
+        try {
+            const response = await axios.delete(`http://your-api-url/products/${id}`);
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const handleDelete = async (code) => {
+        try {
+            await deleteProduct(code);
+            dispatch(removeFromProduct(code));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
   const columns = [
     {
       title: "Код",
@@ -27,13 +80,19 @@ const CardProduct = ({ search }) => {
     },
     {
       title: "Юань",
-      dataIndex: "yuan",
+      dataIndex: "price_yuan",
       sorter: (a, b) => a.yuan - b.yuan,
+      render: (text, record) => (
+        <div>{parseFloat(record.price_yuan.toFixed(2))}</div>
+      ),
     },
     {
       title: "Доллар",
-      dataIndex: "usd",
+      dataIndex: "price_usd",
       sorter: (a, b) => a.usd - b.usd,
+      render: (text, record) => (
+        <div>{parseFloat(record.price_usd.toFixed(2))}</div>
+      ),
     },
     {
       title: "Действия",
@@ -42,132 +101,11 @@ const CardProduct = ({ search }) => {
       render: (text, record) => (
         <div className="action">
           <Button onClick={() => handleEdit(record)}>Редактировать</Button>
-          <Button>Удалить</Button>
+          <Button onClick={() => handleDelete(record?.code)}>Удалить</Button>
         </div>
       ),
     },
   ];
-
-  const [product, setProduct] = useState([
-    {
-      code: "111111111111111111111111111111",
-      name: "adidas",
-      quantity: 5,
-      yuan: 10,
-      usd: 90,
-    },
-    {
-      code: "22222",
-      name: "lining",
-      quantity: 3,
-      yuan: 10,
-      usd: 90,
-    },
-    {
-      code: "3333",
-      name: "puma",
-      quantity: 1,
-      yuan: 10,
-      usd: 90,
-    },
-    {
-      code: "44444",
-      name: "nike",
-      quantity: 1,
-      yuan: 10,
-      usd: 90,
-    },
-    {
-      code: "55551",
-      name: "reebok",
-      quantity: 1,
-      yuan: 10,
-      usd: 90,
-    },
-    {
-      code: "12",
-      name: "berska",
-      quantity: 1,
-      yuan: 10,
-      usd: 90,
-    },
-    {
-      code: "22",
-      name: "berska",
-      quantity: 1,
-      yuan: 10,
-      usd: 90,
-    },
-    {
-      code: "13",
-      name: "berska",
-      quantity: 1,
-      yuan: 10,
-      usd: 90,
-    },
-    {
-      code: "14",
-      name: "berska",
-      quantity: 1,
-      yuan: 10,
-      usd: 90,
-    },
-    {
-      code: "8",
-      name: "berska",
-      quantity: 1,
-      yuan: 10,
-      usd: 90,
-    },
-    {
-      code: "7",
-      name: "berska",
-      quantity: 1,
-      yuan: 10,
-      usd: 90,
-    },
-    {
-      code: "6",
-      name: "berska",
-      quantity: 1,
-      yuan: 10,
-      usd: 90,
-    },
-    {
-      code: "21",
-      name: "berska",
-      quantity: 1,
-      yuan: 10,
-      usd: 90,
-    },
-  ]);
-
-  const results = !search
-    ? product
-    : product.filter((card) => card.code?.includes(search));
-
-  const handleClick = (item) => {
-    dispatch(addToCart(item));
-  };
-  const onChange = (pagination, filters, sorter, extra) => {
-    console.log("params", pagination, filters, sorter, extra);
-  };
-
-
-  const handleEdit = (record) => {
-    setSelectedProduct(record);
-    setShow(true);
-  };
-
-  const handleDelete = (record) => {
-    console.log("Удалить:", record);
-    // Здесь добавьте ваш код для удаления элемента
-  };
-  const updateProduct = (updatedProduct) => {
-    setProduct(
-        product.map((item) => (item.code === updatedProduct.code ? updatedProduct : item))
-    );
-  };
   return (
     <div className="card">
       <Table
@@ -177,22 +115,23 @@ const CardProduct = ({ search }) => {
         onRow={(record) => {
           return {
             onClick: (event) => {
-              if (!event.target.closest('.action')) {
+              if (!event.target.closest(".action")) {
                 handleClick(record);
               }
-            }
+            },
           };
         }}
         pagination={false}
         bordered
+        footer={() => 'Footer'}
       />
 
       <ModalWrapper
-          title="Редактировать Товар"
-          show={show}
-          close={() => setShow(false)}
-          selectedProduct={selectedProduct}
-          updateProduct={updateProduct}
+        title="Редактировать Товар"
+        show={show}
+        close={() => setShow(false)}
+        selectedProduct={selectedProduct}
+        updateProduct={updateProduct}
       />
     </div>
   );

@@ -2,9 +2,9 @@
   display: flex;
   gap: 10px;
   flex-direction: column;
-  height: 65vh;
+  height: 70vh;
   overflow: auto;
-
+  margin-bottom: 10px;
   .ant-card-body {
     display: flex;
     justify-content: space-between;
@@ -17,11 +17,20 @@
   .ant-card-body:after {
     display: none;
   }
-.action {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
-}
+  .action {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .ant-table-thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
 
-
+  .ant-table-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 1; /* Для поддержки stacking context */
+  }
+}

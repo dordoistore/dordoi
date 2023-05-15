@@ -13,12 +13,12 @@ const Edit = ({ selectedProduct, closeModal,  updateProduct }) => {
       description: 'Операция выполнена успешно',
     });
   };
-  const onSubmit = (values) => {
-    console.log("Received values of form: ", values);
-    closeModal();
-    updateProduct(values);
-    openNotification();
-  };
+    const onSubmit = (values) => {
+        console.log("Received values of form: ", values);
+        closeModal();
+        updateProduct({...values, code: selectedProduct.code});
+        openNotification();
+    };
 
   useEffect(() => {
     if (selectedProduct) {
@@ -26,8 +26,8 @@ const Edit = ({ selectedProduct, closeModal,  updateProduct }) => {
         code: selectedProduct.code,
         name: selectedProduct.name,
         quantity: selectedProduct.quantity,
-        yuan: selectedProduct.yuan,
-        usd: selectedProduct.usd,
+        price_yuan: selectedProduct.price_yuan,
+        price_usd: selectedProduct.price_usd,
       });
     } else {
       form.resetFields();
@@ -76,7 +76,7 @@ const Edit = ({ selectedProduct, closeModal,  updateProduct }) => {
           />
         </Form.Item>
         <Form.Item
-          name="yuan"
+          name="price_yuan"
           rules={[
             {
               required: true,
@@ -87,7 +87,7 @@ const Edit = ({ selectedProduct, closeModal,  updateProduct }) => {
           <Input type="number" addonBefore="Юань" placeholder="Цена в юанях" />
         </Form.Item>
         <Form.Item
-          name="usd"
+          name="price_usd"
           rules={[
             {
               required: true,

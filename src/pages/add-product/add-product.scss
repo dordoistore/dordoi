@@ -1,9 +1,15 @@
 .add_product {
   display: flex;
   gap: 10px;
+justify-content: center;
 
   .ant-btn-default {
     color: green;
     border-color: green;
+  }
+
+  .button {
+    display: flex;
+    justify-content: flex-end;
   }
 }
