@@ -1,24 +1,21 @@
 import React from "react";
 import axios from 'axios';
+
 import {Button, Form, Input, Select} from "antd";
+import {BASE_URL, API} from "../../contants/API";
+import {openNotification} from "../../utils/notification-done";
 
 import "./add-product.scss";
-import {BASE_URL, API} from "../../contants/API";
+
 
 const AddProduct = () => {
   const [form] = Form.useForm();
   const onSubmit = async (values) => {
-    const payload = {
-      code: values.code,
-      name: values.name,
-      factory: values.factory,
-      quantity: +values.quantity,
-      price_yuan: +values.yuan,
-      price_usd: +values.usd
-    }
-    await axios.post(`${BASE_URL}/${API.products}`, payload);
+
+    await axios.post(`${BASE_URL}/${API.products}`, values);
     form.resetFields();
     //show tooltip 'Создано'
+      openNotification()
   };
   return (
     <Form className="add_product container" form={form} onFinish={onSubmit}>
@@ -60,11 +57,11 @@ const AddProduct = () => {
                     options={[
                         {
                             value: 'china',
-                            label: 'China',
+                            label: 'Китай',
                         },
                         {
                             value: 'usa',
-                            label: 'USA',
+                            label: 'Америка',
                         },
                     ]}
                 />
@@ -87,7 +84,7 @@ const AddProduct = () => {
                 />
             </Form.Item>
             <Form.Item
-                name="yuan"
+                name="price_yuan"
                 rules={[
                     {
                         required: true,
@@ -98,7 +95,7 @@ const AddProduct = () => {
                 <Input type="number" addonBefore="Юань" placeholder="Цена в юанях" />
             </Form.Item>
             <Form.Item
-                name="usd"
+                name="price_usd"
                 rules={[
                     {
                         required: true,

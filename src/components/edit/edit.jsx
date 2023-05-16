@@ -1,23 +1,16 @@
 import React, { useEffect } from "react";
+import {Button, Form, Input} from "antd";
+
+import {openNotification} from "../../utils/notification-done"
+
 import "./edit.scss";
-import {Button, Form, Input, notification} from "antd";
 const Edit = ({ selectedProduct, closeModal,  updateProduct }) => {
   const [form] = Form.useForm();
-  const openNotification = () => {
-    notification.config({
-      placement: 'topRight',
-    });
-
-    notification.success({
-      message: 'Готово',
-      description: 'Операция выполнена успешно',
-    });
-  };
     const onSubmit = (values) => {
         console.log("Received values of form: ", values);
         closeModal();
         updateProduct({...values, code: selectedProduct.code});
-        openNotification();
+        openNotification()
     };
 
   useEffect(() => {

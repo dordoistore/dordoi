@@ -59,8 +59,8 @@ const Cart = () => {
                 item.quantity
               )}
             </div>
-            <div>{Math.round(item.price_usd)}</div>
-            <div>{item.quantity * Math.round(item.price_usd)}</div>
+            <div>{Math.round(item.price_usd)}$</div>
+            <div>{item.quantity * Math.round(item.price_usd)}$</div>
           </div>
           <Delete onClick={() => handleDelete(item.code)} />
         </Card>

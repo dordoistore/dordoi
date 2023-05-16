@@ -1,12 +1,29 @@
+@keyframes twinkling {
+  0% {background-position: 0 0;}
+  100% {background-position: -999999px 999999px;}
+}
+
 .header {
   padding: 20px;
-  background-color: #4B0082;
+  background: #000 url(http://www.script-tutorials.com/demos/360/images/stars.png) repeat top center;
+  animation: twinkling 5000s linear infinite;
   margin-bottom: 16px;
   gap: 40px;
   display: flex;
-  justify-content: center;
-
+  justify-content: space-evenly;
+  align-items: center;
   .text {
-    color: #FFD700;
+    color: #E7AC3C;
   }
+
+  .header_nav {
+    display: flex;
+    gap: 20px;
+  }
+  .img {
+    width: 60px;
+    border-radius: 50%;
+  }
+  padding-left: 40px !important;
+  padding-right: 40px !important;
 }

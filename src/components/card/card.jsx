@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table } from "antd";
+import { Button, Table, Modal, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import {
+    EditOutlined,
+    DeleteOutlined,
+    SearchOutlined
+
+} from '@ant-design/icons';
+
 
 import { addToCart } from "../../store/actions/cart-actions";
 import ModalWrapper from "../modal/modal";
-import {editProduct, removeFromProduct, setProducts} from "../../store/actions/product-actions";
+import {editProduct, fetchProducts, removeFromProduct, setProducts} from "../../store/actions/product-actions";
 import { API, BASE_URL } from "../../contants/API";
+import {round} from "../../utils/math";
 
 import "./card.scss";
+const { Option } = Select;
 const CardProduct = ({ search }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -17,20 +26,13 @@ const CardProduct = ({ search }) => {
   const results = !search
     ? products
     : products.filter((card) => card.code?.includes(search));
+    const factories = ["Фабрика 1", "Фабрика 2", "Фабрика 3"];
 
-  useEffect(() => {
-      fetchProduct()
-  }, [products]);
   const handleClick = (item) => {
     dispatch(addToCart(item));
   };
   const onChange = (pagination, filters, sorter, extra) => {
-    console.log("params", pagination, filters, sorter, extra);
   };
-    const fetchProduct = async () => {
-        const response = await axios.get(`${BASE_URL}/${API.products}`);
-        dispatch(setProducts(response.data));
-    };
   const handleEdit = (record) => {
     setSelectedProduct(record);
     setShow(true);
@@ -39,27 +41,38 @@ const CardProduct = ({ search }) => {
     const updateProduct = async (updatedProduct) => {
         const response = await axios.put(`${BASE_URL}/${API.products}/${selectedProduct.code}`, updatedProduct);
         if (response.status === 200) {
-            dispatch(editProduct(response.data));  // Здесь предполагается, что сервер возвращает обновленный продукт в ответе
+            dispatch(editProduct(response.data));
         } else {
             console.error("Ошибка: не удалось обновить продукт");
         }
+        dispatch(fetchProducts())
     };
 
     const deleteProduct = async (id) => {
         try {
-            const response = await axios.delete(`http://your-api-url/products/${id}`);
+            const response = await axios.delete(`${BASE_URL}/${API.products}/${id}`);
             console.log(response.data);
         } catch (error) {
             console.error(error);
         }
     };
     const handleDelete = async (code) => {
-        try {
-            await deleteProduct(code);
-            dispatch(removeFromProduct(code));
-        } catch (error) {
-            console.error(error);
-        }
+        Modal.confirm({
+            title: 'Вы уверены, что хотите удалить этот товар?',
+            okText: 'Да, удалить',
+            cancelText: 'Отмена',
+            onOk: async () => {
+                try {
+                    await deleteProduct(code);
+                    dispatch(removeFromProduct(code));
+                } catch (error) {
+                    console.error(error);
+                }
+            },
+            onCancel() {
+                console.log('Отмена удаления');
+            },
+        });
     };
 
   const columns = [
@@ -68,6 +81,47 @@ const CardProduct = ({ search }) => {
       dataIndex: "code",
       sorter: (a, b) => a.code - b.code,
     },
+      {
+          title: "Фабрика",
+          dataIndex: "factory",
+          sorter: (a, b) => a.factory.localeCompare(b.factory),
+          filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+              <div style={{ padding: 8 }}>
+                  <Select
+                      showSearch
+                      style={{ width: 188, marginBottom: 8, display: "block" }}
+                      placeholder="Выберите фабрику"
+                      value={selectedKeys[0]}
+                      onChange={value => setSelectedKeys(value ? [value] : [])}
+                      onSearch={value => setSelectedKeys(value ? [value] : [])}
+                      onPressEnter={() => confirm()}
+                  >
+                      {factories.map(factory => (
+                          <Option key={factory}>{factory}</Option>
+                      ))}
+                  </Select>
+                  <Button
+                      type="primary"
+                      onClick={() => confirm()}
+                      size="small"
+                      style={{ width: 90, marginRight: 8 }}
+                  >
+                      OK
+                  </Button>
+                  <Button onClick={() => clearFilters()} size="small" style={{ width: 90 }}>
+                      Сброс
+                  </Button>
+              </div>
+          ),
+          filterIcon: filtered => <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />,
+          onFilter: (value, record) => record.factory.includes(value),
+          onFilterDropdownVisibleChange: visible => {
+              if (visible) {
+                  // setTimeout(() => this.searchInput.select(), 100);
+              }
+          },
+          render: text => text
+      },
     {
       title: "Название",
       dataIndex: "name",
@@ -81,17 +135,17 @@ const CardProduct = ({ search }) => {
     {
       title: "Юань",
       dataIndex: "price_yuan",
-      sorter: (a, b) => a.yuan - b.yuan,
+        sorter: (a, b) => a.price_yuan - b.price_yuan,
       render: (text, record) => (
-        <div>{parseFloat(record.price_yuan.toFixed(2))}</div>
+        <div>{round(record.price_yuan)}¥</div>
       ),
     },
     {
       title: "Доллар",
       dataIndex: "price_usd",
-      sorter: (a, b) => a.usd - b.usd,
+      sorter: (a, b) => a.price_usd - b.price_usd,
       render: (text, record) => (
-        <div>{parseFloat(record.price_usd.toFixed(2))}</div>
+        <div>{round(record.price_usd)}$</div>
       ),
     },
     {
@@ -100,8 +154,8 @@ const CardProduct = ({ search }) => {
       width: 150,
       render: (text, record) => (
         <div className="action">
-          <Button onClick={() => handleEdit(record)}>Редактировать</Button>
-          <Button onClick={() => handleDelete(record?.code)}>Удалить</Button>
+          <Button onClick={() => handleEdit(record)}><EditOutlined /></Button>
+          <Button onClick={() => handleDelete(record?.code)}><DeleteOutlined /></Button>
         </div>
       ),
     },
@@ -123,7 +177,6 @@ const CardProduct = ({ search }) => {
         }}
         pagination={false}
         bordered
-        footer={() => 'Footer'}
       />
 
       <ModalWrapper

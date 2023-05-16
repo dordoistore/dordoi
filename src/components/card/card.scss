@@ -2,7 +2,7 @@
   display: flex;
   gap: 10px;
   flex-direction: column;
-  height: 70vh;
+  height: calc(100vh - 200px);
   overflow: auto;
   margin-bottom: 10px;
   .ant-card-body {
@@ -33,4 +33,19 @@
     bottom: 0;
     z-index: 1; /* Для поддержки stacking context */
   }
+
+
+}
+
+.ant-tooltip {
+  display: none;
+}
+
+.ant-modal-title {
+  margin: 24px 0 !important;
+  padding-left: 40px !important;
+  padding-right: 40px !important;
+  max-width: 1280px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
